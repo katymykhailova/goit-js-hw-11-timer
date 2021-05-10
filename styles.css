@@ -1,11 +1,5 @@
-:root {
---halfHeight: 0.72em;
---borderRadius: 0.15em;
-}
-
 html { height: 100%; }
 body { 
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
