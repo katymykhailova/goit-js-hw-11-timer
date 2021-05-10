@@ -3,19 +3,31 @@ class CountdownTimer {
     this.intervalId = null;
     this.selector = selector;
     this.targetDate = targetDate;
-
     this.init();
   }
 
   init() {
-    this.creatEl(this.getTimeComponents(this.targetDate - new Date()));
+    let prevTime = this.getTimeComponents(this.targetDate - new Date());
+    this.creatEl(prevTime);
     this.intervalId = setInterval(() => {
       const currentTime = new Date();
       const deltaTime = this.targetDate - currentTime;
       const time = this.getTimeComponents(deltaTime);
       for (const key in time) {
-        document.querySelector(`[data-value="${key}"]`).textContent = time[key];
+        const valueEl = document.querySelector(`[data-value="${key}"]`);
+        const valueOldEl = document.querySelector(`[data-value="${key}Old"]`);
+        const newValue = time[key];
+        const currentValue = prevTime[key];
+        const parent = valueEl.parentNode;
+        if (newValue !== currentValue) {
+          parent.classList.remove('anim');
+          valueEl.textContent = newValue;
+          valueOldEl.textContent = currentValue;
+          const foo = parent.offsetWidth; // reflow hack
+          parent.classList.add('anim');
+        }
       }
+      prevTime = { ...time };
       if (deltaTime < 1000) {
         clearInterval(this.intervalId);
       }
@@ -42,7 +54,10 @@ class CountdownTimer {
     const timeEl = [];
     for (const key in time) {
       timeEl.push(`<div class="field">
-        <span class="value" data-value="${key}">${time[key]}</span>
+        <div class="values">
+          <span class="value" data-value="${key}">${time[key]}</span>
+          <span class="valueOld" data-value="${key}Old">${time[key]}</span>
+        </div>
         <span class="label">${key[0].toUpperCase() + key.slice(1)}</span>
       </div>`);
       timer1.innerHTML = timeEl.join('');
