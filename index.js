@@ -13,7 +13,22 @@ class CountdownTimer {
       const currentTime = new Date();
       const deltaTime = this.targetDate - currentTime;
       const time = this.getTimeComponents(deltaTime);
-      this.creatEl(time);
+      for (const key in time) {
+        const valueNewEl = document.querySelector(`[data-value="${key}New"]`);
+        const valueOldEl = document.querySelector(`[data-value="${key}Old"]`);
+        const newValue = time[key];
+        const currentValue = prevTime[key];
+        const parent = valueNewEl.parentNode;
+        if (newValue !== currentValue) {
+          parent.classList.remove('anim');
+          valueNewEl.textContent = newValue;
+          valueOldEl.textContent = currentValue;
+          const foo = parent.offsetWidth;
+          parent.classList.add('anim');
+        }
+      }
+      prevTime = { ...time };
+
       if (deltaTime < 1000) {
         clearInterval(this.intervalId);
       }
@@ -36,11 +51,11 @@ class CountdownTimer {
   }
 
   creatEl(time = {}) {
-    const timer1 = document.querySelector(this.selector);
-    const timeEl = [];
+    const timer1El = document.querySelector(this.selector);
     for (const key in time) {
-      const documentEl = timer1.querySelector(`[data-value="${key}"]`);
-      documentEl.textContent = `${time[key]}`;
+      const valueEl = timer1El.querySelector(`[data-value="${key}"]`);
+      valueEl.innerHTML = `<span class="valueNew" data-value="${key}New">${time[key]}</span>
+          <span class="valueOld" data-value="${key}Old">${time[key]}</span>`;
     }
   }
 }

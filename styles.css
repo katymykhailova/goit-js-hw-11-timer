@@ -27,17 +27,31 @@ body {
   margin: 0 5px;
 }
 
-.value, .valueOld {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
+.value {
+  height: 200px;
   width: 200px;
-  font-size: 150px;
-  background-color: #000000;
-  color: #a8a8a8;
+  overflow: hidden;
+
 }
 
 .label{
   font-size: 50px;
 }
+
+.valueNew, .valueOld {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 200px;
+  font-size: 150px;
+  background-color: black;
+  color: #a8a8a8;
+  transform: translateY(-200px);
+}
+
+.value.anim .valueNew,  .value.anim .valueOld{
+  transform: translateY(0px);
+  transition: transform .7s ease-in-out;
+}
+
