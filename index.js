@@ -13,21 +13,7 @@ class CountdownTimer {
       const currentTime = new Date();
       const deltaTime = this.targetDate - currentTime;
       const time = this.getTimeComponents(deltaTime);
-      for (const key in time) {
-        const valueEl = document.querySelector(`[data-value="${key}"]`);
-        const valueOldEl = document.querySelector(`[data-value="${key}Old"]`);
-        const newValue = time[key];
-        const currentValue = prevTime[key];
-        const parent = valueEl.parentNode;
-        if (newValue !== currentValue) {
-          parent.classList.remove('anim');
-          valueEl.textContent = newValue;
-          valueOldEl.textContent = currentValue;
-          const foo = parent.offsetWidth; // reflow hack
-          parent.classList.add('anim');
-        }
-      }
-      prevTime = { ...time };
+      this.creatEl(time);
       if (deltaTime < 1000) {
         clearInterval(this.intervalId);
       }
@@ -53,14 +39,8 @@ class CountdownTimer {
     const timer1 = document.querySelector(this.selector);
     const timeEl = [];
     for (const key in time) {
-      timeEl.push(`<div class="field">
-        <div class="values">
-          <span class="value" data-value="${key}">${time[key]}</span>
-          <span class="valueOld" data-value="${key}Old">${time[key]}</span>
-        </div>
-        <span class="label">${key[0].toUpperCase() + key.slice(1)}</span>
-      </div>`);
-      timer1.innerHTML = timeEl.join('');
+      const documentEl = timer1.querySelector(`[data-value="${key}"]`);
+      documentEl.textContent = `${time[key]}`;
     }
   }
 }
@@ -68,5 +48,4 @@ class CountdownTimer {
 const timer = new CountdownTimer({
   selector: '#timer-1',
   targetDate: new Date('Jul 28, 2021'),
-  // targetDate: new Date(1620599958290),
 });
