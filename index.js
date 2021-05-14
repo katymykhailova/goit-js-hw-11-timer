@@ -23,7 +23,7 @@ class CountdownTimer {
           parent.classList.remove('anim');
           valueNewEl.textContent = newValue;
           valueOldEl.textContent = currentValue;
-          const foo = parent.offsetWidth;
+          const reflow = parent.offsetWidth;
           parent.classList.add('anim');
         }
       }
